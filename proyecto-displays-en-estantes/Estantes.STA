@@ -1,0 +1,52 @@
+
+ROM used:   212 (3%)
+            212 (3%) including unused fragments
+
+            0 Average locations per line
+            10 Average locations per statement
+
+RAM used:   28 (5%) at main() level
+            45 (9%) worst case
+
+Stack used: 2/16 worst case (1 in main + 1 for interrupts)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+  105    22 100  Estantes.c
+  651     0   0  ..\..\..\..\Program Files (x86)\PICC\Devices\16f1937.h
+----- -----
+  756    22 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     97  46   0   108  1.2  inicializar
+0      4   2   0             @const87
+ Inline        4             @PSTRINGC7_9600_118_119
+0     44  21   2   321  6.2  serial_isr
+0     35  17   0    27  1.0  MAIN
+ Inline        0             @cinit1
+
+Program metrics:
+    Functions               3
+    Statements              22
+    Comments                161
+    Volume (V)              582
+    Difficulty (D)          8.1
+    Effort to implement (E) 4741
+    Time to implement (T)   4 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   2
+    Maintainability (MI)    64
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00002     3  0  
+00003-00003     0  1  
+00004-00020    29  0  
+00021-007FF   180  1835  
+00800-00FFF     0  2048  
+01000-017FF     0  2048  
+01800-01FFF     0  2048  
+
+
+

@@ -1,0 +1,105 @@
+ #include <16f1937.h>  //microcontrolador ej: #include <xxxx.h>
+ #fuses   INTRC_IO  //fusible del cristal #fuses   INTRC_IO  
+ #FUSES   NOWDT,PUT,NOPROTECT, NOLVP, NOBROWNOUT ,NOMCLR  //fuses ejm: NOWDT,PUT,NOPROTECT, NOLVP, NOBROWNOUT ,NOMCLR
+ #use     delay (CLOCK=8M)  //seleccion de la frecuencia del cristal ejm: #use     delay (CLOCK=8M)
+ #use     rs232(baud=9600, xmit=PIN_C6,rcv=PIN_C7)  //seleccion pines comunicacion serial #use     rs232(baud=9600, xmit=PIN_C6) 
+
+/*****************************************************************************
+* la comunicación se realizara de la siguiente manera, si se desea mandar un 2 al 
+primer estante, en el 3 nivel la trama seria
+
+               ?01$03#02*
+******************************************************/
+ 
+#define CF '?'
+#define CC '$'
+#define CD '#'
+#define CFin '*'
+#define pinS pin_a0
+#define pinC pin_a1
+#define pinD pin_a2
+
+
+char comodin;
+int fila[2];
+int columna[2];
+int cantidad[2];
+
+int1 inicioVal=0;
+int i=0;
+char dato;
+char buffer[9];
+
+void inicializar (){
+   enable_interrupts(GLOBAL);   
+   enable_interrupts(int_rda);   
+   output_low(pinS); //strober
+   output_low(pinC); //clock
+   output_low(pinD); //data
+   printf("MP2017");
+}
+
+
+#INT_rda
+void serial_isr() 
+{ 
+   dato=getchar();
+   if(dato==CF && inicioVal==0){
+      inicioVal=1;   
+   }else{   
+      if(dato != CFin || i<9){   
+         buffer[i]=dato;
+         i++;
+      }else{
+          printf("%c",buffer[3]);
+          i=0;
+          inicioVal=0; 
+      }
+   }
+//!switch(dato){
+//!    case CF: comodin = CF;
+//!             i=0;
+//!    break;
+//!    case CC: comodin = CC;
+//!            i=0;
+//!    break;
+//!    case CD: comodin = CD;
+//!            i=0;
+//!    break;
+//!    case CFin: comodin =CFin;
+//!            i=0;
+//!    break;
+//!    default:
+//!    switch (comodin){
+//!    case CF:
+//!         fila[i]=dato;
+//!         i++;
+//!         break;
+//!    case CC:
+//!         columna[i]=dato;
+//!         i++;
+//!         break;
+//!    case CD:
+//!         cantidad[i]=dato;
+//!         i++;
+//!         break;
+//!    case CFin:
+//!         printf ("%i, %i, %i",fila[1], columna[1], cantidad[1]);
+//!    }    
+}
+    
+ 
+}
+
+
+void main()    
+{
+inicializar();
+while(1)
+{ 
+   
+}
+}
+
+
+

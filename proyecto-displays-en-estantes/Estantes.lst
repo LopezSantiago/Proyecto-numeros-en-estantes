@@ -1,0 +1,261 @@
+CCS PCM C Compiler, Version 4.140, 15424               27-ene.-17 23:13
+
+               Filename:   C:\Users\USER\Desktop\Proyecto numeros en estantes\Estantes.lst
+
+               ROM used:   212 words (3%)
+                           Largest free fragment is 2048
+               RAM used:   28 (5%) at main() level
+                           45 (9%) worst case
+               Stack:     2 worst case (1 in main + 1 for interrupts)
+
+*
+0000:  MOVLP  00
+0001:  GOTO   0B2
+0002:  NOP
+*
+0004:  CLRF   03
+0005:  CLRF   0A
+0006:  MOVLB  00
+0007:  MOVF   77,W
+0008:  MOVWF  20
+0009:  MOVF   78,W
+000A:  MOVWF  21
+000B:  MOVF   79,W
+000C:  MOVWF  22
+000D:  MOVF   7A,W
+000E:  MOVWF  23
+000F:  CLRF   05
+0010:  MOVLW  91
+0011:  MOVWF  04
+0012:  BTFSS  00.5
+0013:  GOTO   016
+0014:  BTFSC  11.5
+0015:  GOTO   01F
+0016:  MOVF   20,W
+0017:  MOVWF  77
+0018:  MOVF   21,W
+0019:  MOVWF  78
+001A:  MOVF   22,W
+001B:  MOVWF  79
+001C:  MOVF   23,W
+001D:  MOVWF  7A
+001E:  RETFIE
+001F:  MOVLP  00
+0020:  GOTO   025
+....................  #include <16f1937.h>  //microcontrolador ej: #include <xxxx.h> 
+.................... //////// Standard Header file for the PIC16F1937 device //////////////// 
+.................... #device PIC16F1937 
+.................... #list 
+....................  
+....................  #fuses   INTRC_IO  //fusible del cristal #fuses   INTRC_IO   
+....................  #FUSES   NOWDT,PUT,NOPROTECT, NOLVP, NOBROWNOUT ,NOMCLR  //fuses ejm: NOWDT,PUT,NOPROTECT, NOLVP, NOBROWNOUT ,NOMCLR 
+....................  #use     delay (CLOCK=8M)  //seleccion de la frecuencia del cristal ejm: #use     delay (CLOCK=8M) 
+....................  #use     rs232(baud=9600, xmit=PIN_C6,rcv=PIN_C7)  //seleccion pines comunicacion serial #use     rs232(baud=9600, xmit=PIN_C6)  
+....................  
+.................... /***************************************************************************** 
+.................... * la comunicación se realizara de la siguiente manera, si se desea mandar un 2 al  
+.................... primer estante, en el 3 nivel la trama seria 
+....................  
+....................                ?01$03#02* 
+.................... ******************************************************/ 
+....................   
+.................... #define CF '?' 
+.................... #define CC '$' 
+.................... #define CD '#' 
+.................... #define CFin '*' 
+.................... #define pinS pin_a0 
+.................... #define pinC pin_a1 
+.................... #define pinD pin_a2 
+....................  
+....................  
+.................... char comodin; 
+.................... int fila[2]; 
+.................... int columna[2]; 
+.................... int cantidad[2]; 
+....................  
+.................... int1 inicioVal=0; 
+.................... int i=0; 
+.................... char dato; 
+.................... char buffer[9]; 
+....................  
+.................... void inicializar (){ 
+....................    enable_interrupts(GLOBAL);    
+*
+0051:  MOVLW  C0
+0052:  IORWF  0B,F
+....................    enable_interrupts(int_rda);    
+0053:  MOVLB  01
+0054:  BSF    11.5
+....................    output_low(pinS); //strober 
+0055:  BCF    0C.0
+0056:  MOVLB  02
+0057:  BCF    0C.0
+....................    output_low(pinC); //clock 
+0058:  MOVLB  01
+0059:  BCF    0C.1
+005A:  MOVLB  02
+005B:  BCF    0C.1
+....................    output_low(pinD); //data 
+005C:  MOVLB  01
+005D:  BCF    0C.2
+005E:  MOVLB  02
+005F:  BCF    0C.2
+....................    printf("MP2017"); 
+0060:  MOVLW  21
+0061:  MOVLB  03
+0062:  MOVWF  11
+0063:  MOVLW  00
+0064:  MOVWF  12
+.................... } 
+*
+00B0:  MOVLP  00
+00B1:  GOTO   0D3 (RETURN)
+....................  
+....................  
+.................... #INT_rda 
+.................... void serial_isr()  
+.................... {  
+....................    dato=getchar(); 
+*
+0025:  BTFSS  11.5
+0026:  GOTO   025
+0027:  MOVLB  03
+0028:  MOVF   19,W
+0029:  MOVLB  00
+002A:  MOVWF  2D
+....................    if(dato==CF && inicioVal==0){ 
+002B:  MOVF   2D,W
+002C:  SUBLW  3F
+002D:  BTFSS  03.2
+002E:  GOTO   033
+002F:  BTFSC  2B.0
+0030:  GOTO   033
+....................       inicioVal=1;    
+0031:  BSF    2B.0
+....................    }else{    
+0032:  GOTO   04E
+....................       if(dato != CFin || i<9){    
+0033:  MOVF   2D,W
+0034:  SUBLW  2A
+0035:  BTFSS  03.2
+0036:  GOTO   03B
+0037:  MOVF   2C,W
+0038:  SUBLW  08
+0039:  BTFSS  03.0
+003A:  GOTO   046
+....................          buffer[i]=dato; 
+003B:  MOVLW  0E
+003C:  ADDWF  2C,W
+003D:  MOVWF  04
+003E:  MOVLW  20
+003F:  MOVWF  05
+0040:  BTFSC  03.0
+0041:  INCF   05,F
+0042:  MOVF   2D,W
+0043:  MOVWF  00
+....................          i++; 
+0044:  INCF   2C,F
+....................       }else{ 
+0045:  GOTO   04E
+....................           printf("%c",buffer[3]); 
+0046:  MOVF   31,W
+0047:  BTFSS  11.4
+0048:  GOTO   047
+0049:  MOVLB  03
+004A:  MOVWF  1A
+....................           i=0; 
+004B:  MOVLB  00
+004C:  CLRF   2C
+....................           inicioVal=0;  
+004D:  BCF    2B.0
+....................       } 
+....................    } 
+.................... //!switch(dato){ 
+.................... //!    case CF: comodin = CF; 
+.................... //!             i=0; 
+.................... //!    break; 
+.................... //!    case CC: comodin = CC; 
+.................... //!            i=0; 
+.................... //!    break; 
+.................... //!    case CD: comodin = CD; 
+.................... //!            i=0; 
+.................... //!    break; 
+.................... //!    case CFin: comodin =CFin; 
+.................... //!            i=0; 
+.................... //!    break; 
+.................... //!    default: 
+.................... //!    switch (comodin){ 
+.................... //!    case CF: 
+.................... //!         fila[i]=dato; 
+.................... //!         i++; 
+.................... //!         break; 
+.................... //!    case CC: 
+.................... //!         columna[i]=dato; 
+.................... //!         i++; 
+.................... //!         break; 
+.................... //!    case CD: 
+.................... //!         cantidad[i]=dato; 
+.................... //!         i++; 
+.................... //!         break; 
+.................... //!    case CFin: 
+.................... //!         printf ("%i, %i, %i",fila[1], columna[1], cantidad[1]); 
+.................... //!    }     
+.................... } 
+....................      
+....................   
+....................  
+....................  
+004E:  BCF    11.5
+004F:  MOVLP  00
+0050:  GOTO   016
+.................... void main()     
+.................... { 
+*
+00B2:  CLRF   05
+00B3:  CLRF   04
+00B4:  MOVLW  72
+00B5:  MOVLB  01
+00B6:  MOVWF  19
+00B7:  MOVLW  0C
+00B8:  MOVLB  03
+00B9:  MOVWF  1B
+00BA:  MOVLW  A2
+00BB:  MOVWF  1E
+00BC:  MOVLW  90
+00BD:  MOVWF  1D
+00BE:  MOVLB  00
+00BF:  BCF    2B.0
+00C0:  CLRF   2C
+00C1:  MOVLB  0F
+00C2:  CLRF   11
+00C3:  CLRF   12
+00C4:  CLRF   18
+00C5:  CLRF   19
+00C6:  CLRF   1A
+00C7:  MOVLB  03
+00C8:  CLRF   0C
+00C9:  CLRF   0D
+00CA:  CLRF   0F
+00CB:  CLRF   10
+00CC:  MOVLB  02
+00CD:  CLRF   12
+00CE:  CLRF   11
+00CF:  CLRF   14
+00D0:  CLRF   13
+.................... inicializar(); 
+00D1:  MOVLB  00
+00D2:  GOTO   051
+.................... while(1) 
+.................... {  
+....................     
+.................... } 
+00D3:  GOTO   0D3
+.................... } 
+....................  
+....................  
+....................  
+00D4:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3984   INTRC_IO NOWDT PUT NOMCLR NOPROTECT NOCPD NOBROWNOUT NOCLKOUT IESO FCMEN
+   Word  2: 1EFF   NOWRT NOVCAP PLL_SW STVREN BORV19 NODEBUG NOLVP

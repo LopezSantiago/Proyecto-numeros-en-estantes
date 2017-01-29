@@ -1,0 +1,5 @@
+>>> Warning 203 "sin timer.c" Line 122(1,1): Condition always TRUE
+>>> Warning 202 "sin timer.c" Line 39(6,13): Variable never used:   numeros
+      Memory usage:   ROM=9%      RAM=6% - 13%
+      0 Errors,  2 Warnings.
+Build Successful.

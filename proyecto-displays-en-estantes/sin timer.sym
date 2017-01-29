@@ -1,0 +1,147 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004-005 @WRITE_PACKED_MEMORY.P2
+004-005 @WRITE_PROGRAM_MEMORY8.P3
+004-005 @READ_PACKED_MEMORY.P4
+006-007 @READ_PACKED_MEMORY.P1
+006-007 @WRITE_PACKED_MEMORY.P2
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024-027 numeroSeleccionado
+028     dato
+029     gate
+02A-02C datos_x_serial
+02D     i
+02E     unidad
+02F     decena
+030-039 numeros
+03A     LlenarVector.i
+03A     @PSTRINGC7_9600_118_119.@SCRATCH1
+03B     LlenarVector.i
+03B     @PSTRINGC7_9600_118_119.@SCRATCH2
+03C     @PSTRINGC7_9600_118_119.@SCRATCH3
+03D     @PSTRINGC7_9600_118_119.@SCRATCH4
+03E-041 @MULFF.P1
+03E     serial_isr.@SCRATCH1
+03F     serial_isr.@SCRATCH2
+040     serial_isr.@SCRATCH3
+041     serial_isr.@SCRATCH4
+042-045 @ADDFF.P1
+042-043 @ITOF.P2
+042-045 @MULFF.P3
+046-049 @ADDFF.P1
+046     @MULFF.@SCRATCH1
+047     @MULFF.@SCRATCH2
+048     @MULFF.@SCRATCH3
+049     @MULFF.@SCRATCH4
+04A     @MULFF.@SCRATCH5
+04A     @ADDFF.@SCRATCH1
+04B     @ADDFF.@SCRATCH2
+04C     @ADDFF.@SCRATCH3
+04D     @ADDFF.@SCRATCH4
+04E     @ADDFF.@SCRATCH5
+04F     @ADDFF.@SCRATCH6
+050     @ADDFF.@SCRATCH7
+051     @ADDFF.@SCRATCH8
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07F     @INTERRUPT_AREA
+0FF     @INTERRUPT_AREA
+111.6   C1OUT
+113.6   C2OUT
+17F     @INTERRUPT_AREA
+191-192 @WRITE_PROGRAM_MEMORY8.P1
+191-192 @READ_PROGRAM_MEMORY8.P2
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+291     CCP_1_LOW
+291     CCP_1
+292     CCP_1_HIGH
+298     CCP_2
+298     CCP_2_LOW
+299     CCP_2_HIGH
+2FF     @INTERRUPT_AREA
+311     CCP_3_LOW
+311     CCP_3
+312     CCP_3_HIGH
+318     CCP_4_LOW
+318     CCP_4
+319     CCP_4_HIGH
+31C     CCP_5
+31C     CCP_5_LOW
+31D     CCP_5_HIGH
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+47F     @INTERRUPT_AREA
+4FF     @INTERRUPT_AREA
+57F     @INTERRUPT_AREA
+5FF     @INTERRUPT_AREA
+67F     @INTERRUPT_AREA
+6FF     @INTERRUPT_AREA
+77F     @INTERRUPT_AREA
+7FF     @INTERRUPT_AREA
+87F     @INTERRUPT_AREA
+8FF     @INTERRUPT_AREA
+97F     @INTERRUPT_AREA
+9FF     @INTERRUPT_AREA
+A7F     @INTERRUPT_AREA
+AFF     @INTERRUPT_AREA
+B7F     @INTERRUPT_AREA
+BFF     @INTERRUPT_AREA
+C7F     @INTERRUPT_AREA
+CFF     @INTERRUPT_AREA
+D7F     @INTERRUPT_AREA
+DFF     @INTERRUPT_AREA
+E7F     @INTERRUPT_AREA
+EFF     @INTERRUPT_AREA
+F7F     @INTERRUPT_AREA
+FFF     @INTERRUPT_AREA
+
+ROM Allocation:
+00003E  serial_isr
+000021  @ITOF
+00006C  @MULFF
+0000FD  @ADDFF
+00025E  LlenarVector
+0002CC  MAIN
+00025A  Mcu_init
+000249  @const105
+00027F  @PSTRINGC7_9600_118_119
+0002CC  @cinit1
+0002EA  @cinit2
+
+Project Directory:
+    C:\Users\USER\Desktop\Proyecto numeros en estantes\
+
+Project Files:
+    sin timer.c                                             [25-ene.-17 18:59  CRC=5787319C]
+    ..\..\..\..\Program Files (x86)\PICC\Devices\16f1937.h  [30-nov.-12 18:59  CRC=C28FE885]
+
+Source signature=DCA702A6
+
+Units:
+    sin timer (main)
+
+Compiler Settings:
+    Processor:      PIC16F1937
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+    Enhanced 16:    Yes
+
+Output Files:
+    Errors:      sin timer.err
+    Ext Symbols: sin timer.esym
+    INHX8:       sin timer.hex
+    Symbols:     sin timer.sym
+    List:        sin timer.lst
+    Debug/COFF:  sin timer.cof
+    Project:     sin timer.PJT
+    Call Tree:   sin timer.tre
+    Statistics:  sin timer.STA
